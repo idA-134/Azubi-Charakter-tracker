@@ -4,6 +4,7 @@ from datetime import datetime
 import shutil
 import glob
 import pathlib
+import re
 
 from config import DATA_DIR, BACKUPS_TO_KEEP, QUARANTINE_DIR, ASSETS_DIR
 import db
@@ -11,18 +12,34 @@ import db
 def safe_mkdir(path):
     os.makedirs(path, exist_ok=True)
 
-def _username_from_id(char_id):
-    return char_id.replace(' ', '_').lower()
+def _sanitize_filename(s: str, max_len: int = 64) -> str:
+    """
+    Erzeugt aus einem beliebigen Namen einen sicheren Dateinamen-Teil:
+    - ersetzt Leerzeichen durch Unterstriche
+    - entfernt unerlaubte Zeichen
+    - kürzt auf max_len
+    """
+    if not s:
+        return 'unknown'
+    # normalize whitespace, replace with underscore
+    s = re.sub(r'\s+', '_', s.strip())
+    # keep letters, numbers, dash, underscore, dot
+    s = re.sub(r'[^A-Za-z0-9_\-\.]', '', s)
+    s = s[:max_len]
+    # avoid empty result
+    return s or 'unknown'
 
 def save_character_file(data):
     """
-    Saves character to /data/characters/{lehrjahr}/{username}_{timestamp}.json
+    Saves character to /data/characters/{lehrjahr}/{sanitized_name}_{timestamp}.json
     Also updates SQLite metadata via db.upsert_character.
     Returns saved path.
     """
     lehrjahr = str(data.get('lehrjahr', 'unknown'))
-    char_id = data.get('id', _username_from_id(data.get('name','unknown')))
-    username = _username_from_id(char_id)
+    char_id = data.get('id') or _sanitize_filename(data.get('name', 'unknown')).lower()
+    # Use the human-readable name for filename (sanitized), fallback to id if no name
+    name_for_file = data.get('name') or char_id
+    username = _sanitize_filename(name_for_file).lower()
     ts = datetime.utcnow().strftime('%Y%m%dT%H%M%SZ')
     base_dir = os.path.join(DATA_DIR, 'characters', lehrjahr)
     safe_mkdir(base_dir)
@@ -67,27 +84,40 @@ def quarantine_raw_bytes(raw_bytes: bytes, orig_filename='upload'):
 def list_backups_for(json_path):
     p = pathlib.Path(json_path)
     base_dir = p.parent
+    # prefix is the portion before the first underscore in filename
     prefix = p.name.split('_')[0]
     matches = sorted(base_dir.glob(f"{prefix}_*.json"), reverse=True)
     return [str(m) for m in matches]
 
 def export_character_json_path(char_id):
+    """
+    Find the most recent JSON file whose content has data['id'] == char_id.
+    This is robust if filenames are based on character name.
+    Returns path or None.
+    """
     base = os.path.join(DATA_DIR, 'characters')
-    username = _username_from_id(char_id)
     matches = []
+    # Walk all JSON files under data/characters
     for root, dirs, files in os.walk(base):
         for fn in files:
-            if fn.startswith(username + '_') and fn.endswith('.json'):
-                matches.append(os.path.join(root, fn))
-    if not matches:
-        for root, dirs, files in os.walk(base):
-            for fn in files:
-                if username in fn and fn.endswith('.json'):
-                    matches.append(os.path.join(root, fn))
+            if not fn.lower().endswith('.json'):
+                continue
+            full = os.path.join(root, fn)
+            try:
+                with open(full, 'r', encoding='utf-8') as f:
+                    data = json.load(f)
+                if data.get('id') == char_id:
+                    # use file modification time for sorting
+                    mtime = os.path.getmtime(full)
+                    matches.append((mtime, full))
+            except Exception:
+                # skip files that can't be read/parsed
+                continue
     if not matches:
         return None
-    matches = sorted(matches, reverse=True)
-    return matches[0]
+    # return the most recently modified file
+    matches.sort(reverse=True)
+    return matches[0][1]
 
 def restore_character_from_backup(backup_path):
     """

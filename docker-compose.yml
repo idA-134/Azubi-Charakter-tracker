@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  azubi:
+    build: .
+    image: azubi-tracker:latest
+    container_name: azubi-tracker
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./data:/app/data
+      - ./assets:/app/assets
+    env_file:
+      - .env
+    restart: unless-stopped

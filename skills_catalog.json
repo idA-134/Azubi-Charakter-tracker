@@ -1,5 +1,5 @@
 {
-  "description": "Vorkonfigurierter Katalog von Skills, Items, Badges und Titeln. Admins können diese Datei bearbeiten/erweitern.",
+  "description": "Vorkonfigurierter Katalog von Skills, Items, Badges, Titeln und Klassen. Admins können diese Datei bearbeiten/erweitern.",
   "skills": [
     "Git",
     "Linux",
@@ -28,7 +28,7 @@
   "items": [
     { "id": "usb_01", "name": "USB-Stick", "description": "Praktisches Werkzeug" },
     { "id": "book_python", "name": "Python-Handbuch", "description": "Lernressource" },
-    { "id": "cert_tutorial", "name": "Tutorial-Zertifikat", "description": "Abschluss eines internen Tutorials" }
+    { "id": "cert_tutorial", "name": "Tutorial-Zertifikat", "description": "Abschluss eines internen Tutorial" }
   ],
   "badges": [
     { "id": "git_master", "name": "Git Master", "criteria": "Skill Git Level >= 5" },
@@ -38,6 +38,13 @@
   "titles": [
     { "id": "junior_webdev", "name": "Junior Webdev", "criteria": "Level >= 2 and skills contains JavaScript" },
     { "id": "sys_admin_in_training", "name": "SysAdmin in Training", "criteria": "skills contains Linux and Networking" }
+  ],
+  "classes": [
+    "Frontend",
+    "Backend",
+    "Serveradmin",
+    "IT-Security",
+    "Netzwerkadmin"
   ],
   "config": {
     "maxStatSum": 30,

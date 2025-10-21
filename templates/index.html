@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <title>Azubi Character Tracker - Upload / Erstellen</title>
+  <link href="/static/styles.css" rel="stylesheet">
+</head>
+<body>
+  <h1>Azubi Character Tracker</h1>
+
+  <section>
+    <h2>Charakter hochladen (JSON)</h2>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+      <input type="file" name="file" accept=".json" required>
+      <button type="submit">Hochladen</button>
+    </form>
+  </section>
+
+  <section>
+    <h2>Kurze Anleitung</h2>
+    <ul>
+      <li>Dateiname: {username}_character.json</li>
+      <li>Format: JSON — Schema wird geprüft.</li>
+      <li>Admins: <a href="/admin/login">Admin Login</a></li>
+    </ul>
+  </section>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <ul class="flashes">
+      {% for category, message in messages %}
+        <li class="{{ category }}">{{ message }}</li>
+      {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+</body>
+</html>

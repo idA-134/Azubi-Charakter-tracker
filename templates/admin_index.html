@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <title>Admin Dashboard</title>
+  <link href="/static/styles.css" rel="stylesheet">
+</head>
+<body>
+  <h1>Admin Dashboard</h1>
+  <p><a href="/admin/catalog_editor">Catalog Editor</a> | <a href="/admin/logout">Logout</a></p>
+
+  <h2>Charaktere (DB)</h2>
+  <ul>
+    {% for entry in characters %}
+      <li>
+        <strong>{{ entry.meta.name }}</strong> ({{ entry.meta.id }}) — Lehrjahr: {{ entry.meta.lehrjahr }} — Klasse: {{ entry.meta.klasse }} — Level: {{ entry.meta.level }} — XP: {{ entry.meta.xp }}
+        <div>
+          Datei: {{ entry.meta.path }} —
+          <a href="/character/{{ entry.meta.id }}">Ansehen</a>
+        </div>
+        <div>
+          Backups:
+          <ul>
+            {% for b in entry.backups %}
+              <li>
+                {{ b }} 
+                <button onclick="restoreBackup('{{ b }}')">Wiederherstellen</button>
+              </li>
+            {% endfor %}
+            {% if not entry.backups %}
+              <li>Keine Backups</li>
+            {% endif %}
+          </ul>
+        </div>
+      </li>
+    {% endfor %}
+  </ul>
+
+  <script>
+    function restoreBackup(path) {
+      if (!confirm('Wirklich wiederherstellen?')) return;
+      fetch('/admin/restore', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({backup_path: path})})
+        .then(r=>r.json()).then(j=>{
+          alert(JSON.stringify(j));
+          if (j.ok) location.reload();
+        }).catch(e=>alert(e));
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Azubi Character Schema",
+  "description": "Schema für Azubi-Charaktere (JSON). Admins können zusätzliche Felder hinzufügen (additionalProperties=true).",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "id": { "type": "string" },
+    "name": { "type": "string" },
+    "lehrjahr": { "type": "integer", "minimum": 1, "maximum": 3 },
+    "klasse": { "type": "string" },
+    "bio": { "type": "string" },
+    "avatarPfad": { "type": "string" },
+    "stats": {
+      "type": "object",
+      "properties": {
+        "technik": { "type": "integer", "minimum": 0, "maximum": 10 },
+        "teamwork": { "type": "integer", "minimum": 0, "maximum": 10 },
+        "kommunikation": { "type": "integer", "minimum": 0, "maximum": 10 },
+        "problemlösung": { "type": "integer", "minimum": 0, "maximum": 10 },
+        "kreativität": { "type": "integer", "minimum": 0, "maximum": 10 },
+        "zeitmanagement": { "type": "integer", "minimum": 0, "maximum": 10 }
+      },
+      "required": ["technik","teamwork","kommunikation","problemlösung","kreativität","zeitmanagement"],
+      "additionalProperties": false
+    },
+    "skills": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "level": { "type": "integer", "minimum": 1, "maximum": 5 }
+        },
+        "required": ["name","level"],
+        "additionalProperties": false
+      }
+    },
+    "inventar": { "type": "array", "items": { "type": "string" } },
+    "xp": { "type": "integer", "minimum": 0 },
+    "level": { "type": "integer", "minimum": 1 },
+    "achievements": { "type": "array", "items": { "type": "string" } },
+    "titles": { "type": "array", "items": { "type": "string" } },
+    "created_at": { "type": "string", "format": "date-time" },
+    "updated_at": { "type": "string", "format": "date-time" },
+    "personality_traits": { "type": "array", "items": { "type": "string" } }
+  },
+  "required": ["id","name","lehrjahr","klasse","stats","xp"],
+  "x-constraints": {
+    "maxStatSum": 30,
+    "maxStartSkills": 5,
+    "skillMaxLevel": 5,
+    "levelAutoFormula": "level = floor(sqrt(xp / 100)) + 1"
+  }
+}

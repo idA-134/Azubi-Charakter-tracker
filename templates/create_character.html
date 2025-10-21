@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <title>Charakter erstellen</title>
+  <link href="/static/styles.css" rel="stylesheet">
+  <script>
+    function addSkillRow() {
+      const container = document.getElementById('skills-container');
+      const idx = container.children.length;
+      const div = document.createElement('div');
+      div.innerHTML = '<input name="skill_name[]" placeholder="Skill-Name"> <select name="skill_level[]"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select>';
+      container.appendChild(div);
+    }
+  </script>
+</head>
+<body>
+  <h1>Charakter erstellen</h1>
+  <form method="post" action="/create">
+    <label>Name: <input name="name" required></label><br>
+    <label>ID (optional): <input name="id"></label><br>
+    <label>Lehrjahr: <input name="lehrjahr" type="number" min="1" max="3" value="1"></label><br>
+    <label>Klasse: <input name="klasse"></label><br>
+    <label>Bio: <textarea name="bio"></textarea></label><br>
+    <label>XP: <input name="xp" type="number" min="0" value="0"></label><br>
+
+    <h3>Stats (0-10)</h3>
+    <label>Technik: <input name="technik" type="number" min="0" max="10" value="0"></label><br>
+    <label>Teamwork: <input name="teamwork" type="number" min="0" max="10" value="0"></label><br>
+    <label>Kommunikation: <input name="kommunikation" type="number" min="0" max="10" value="0"></label><br>
+    <label>Problemlösung: <input name="problemlösung" type="number" min="0" max="10" value="0"></label><br>
+    <label>Kreativität: <input name="kreativität" type="number" min="0" max="10" value="0"></label><br>
+    <label>Zeitmanagement: <input name="zeitmanagement" type="number" min="0" max="10" value="0"></label><br>
+
+    <h3>Skills (aus Katalog)</h3>
+    <div id="skills-container"></div>
+    <button type="button" onclick="addSkillRow()">Skill hinzufügen</button>
+    <p>Du kannst die Skills aus dem Katalog kopieren: <code id="catalog-sample"></code></p>
+
+    <br><button type="submit">Erstellen</button>
+  </form>
+
+  <script>
+    // fill catalog sample
+    fetch('/admin/catalog').then(r=>r.json()).then(c=>{
+      const sample = c.skills && c.skills.slice(0,10).join(', ');
+      document.getElementById('catalog-sample').textContent = sample || 'kein katalog';
+    });
+  </script>
+
+  <p><a href="/">Zurück</a></p>
+</body>
+</html>

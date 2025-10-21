@@ -1,0 +1,48 @@
+{
+  "description": "Vorkonfigurierter Katalog von Skills, Items, Badges und Titeln. Admins können diese Datei bearbeiten/erweitern.",
+  "skills": [
+    "Git",
+    "Linux",
+    "Python",
+    "JavaScript",
+    "SQL",
+    "Docker",
+    "Kubernetes",
+    "Networking",
+    "Java",
+    "C#",
+    "Testing",
+    "CI/CD",
+    "Security",
+    "Cloud (AWS/Azure)",
+    "DevOps",
+    "Kommunikation",
+    "Teamwork",
+    "Problemlösung",
+    "Zeitmanagement",
+    "Präsentation",
+    "HTML/CSS",
+    "React",
+    "REST"
+  ],
+  "items": [
+    { "id": "usb_01", "name": "USB-Stick", "description": "Praktisches Werkzeug" },
+    { "id": "book_python", "name": "Python-Handbuch", "description": "Lernressource" },
+    { "id": "cert_tutorial", "name": "Tutorial-Zertifikat", "description": "Abschluss eines internen Tutorials" }
+  ],
+  "badges": [
+    { "id": "git_master", "name": "Git Master", "criteria": "Skill Git Level >= 5" },
+    { "id": "fast_learner", "name": "Schnelllerner", "criteria": "XP >= 1000" },
+    { "id": "team_player", "name": "Teamplayer", "criteria": "teamwork >= 8" }
+  ],
+  "titles": [
+    { "id": "junior_webdev", "name": "Junior Webdev", "criteria": "Level >= 2 and skills contains JavaScript" },
+    { "id": "sys_admin_in_training", "name": "SysAdmin in Training", "criteria": "skills contains Linux and Networking" }
+  ],
+  "config": {
+    "maxStatSum": 30,
+    "maxStartSkills": 5,
+    "skillMaxLevel": 5,
+    "level_formula": "level = floor(sqrt(xp / 100)) + 1"
+  }
+}

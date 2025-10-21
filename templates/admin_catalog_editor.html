@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <title>Catalog Editor</title>
+  <link href="/static/styles.css" rel="stylesheet">
+</head>
+<body>
+  <h1>Catalog Editor</h1>
+  <p>Bearbeite den Skills/Items/Bages/Titles-Katalog als JSON und speichere.</p>
+  <textarea id="catalog" style="width:100%;height:400px;">{{ catalog_json }}</textarea><br>
+  <button id="save">Speichern</button>
+  <div id="result"></div>
+  <p><a href="/admin">Zurück zum Admin</a></p>
+
+  <script>
+    document.getElementById('save').addEventListener('click', function(){
+      let txt = document.getElementById('catalog').value;
+      try {
+        let parsed = JSON.parse(txt);
+        fetch('/admin/catalog', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(parsed)})
+          .then(r=>r.json()).then(j=>{ document.getElementById('result').textContent = JSON.stringify(j); })
+          .catch(e=>{ document.getElementById('result').textContent = e; });
+      } catch(e) {
+        alert('Ungültiges JSON: ' + e);
+      }
+    });
+  </script>
+</body>
+</html>

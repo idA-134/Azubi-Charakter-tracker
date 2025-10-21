@@ -1,0 +1,40 @@
+{
+  "id": "max.mustermann",
+  "name": "Max Mustermann",
+  "lehrjahr": 1,
+  "klasse": "Frontend",
+  "bio": "Azubi im ersten Lehrjahr, interessiert an Webentwicklung und Versionierung.",
+  "avatarPfad": "assets/avatars/max.png",
+  "stats": {
+    "technik": 8,
+    "teamwork": 6,
+    "kommunikation": 4,
+    "problemlösung": 7,
+    "kreativität": 3,
+    "zeitmanagement": 2
+  },
+  "skills": [
+    { "name": "Git", "level": 2 },
+    { "name": "HTML/CSS", "level": 3 },
+    { "name": "JavaScript", "level": 2 }
+  ],
+  "inventar": [
+    "Tutorial-Zertifikat",
+    "USB-Stick"
+  ],
+  "xp": 450,
+  "level": 3,
+  "achievements": [
+    "first-commit",
+    "passed-quiz-1"
+  ],
+  "titles": [
+    "Junior Webdev"
+  ],
+  "created_at": "2025-10-21T12:00:00Z",
+  "updated_at": "2025-10-21T12:30:00Z",
+  "personality_traits": [
+    "analytisch",
+    "neugierig"
+  ]
+}

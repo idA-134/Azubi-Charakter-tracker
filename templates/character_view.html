@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <title>Charakter: {{ character.name }}</title>
+  <link href="/static/styles.css" rel="stylesheet">
+</head>
+<body>
+  <h1>{{ character.name }} (Level {{ character.level }})</h1>
+  <p>Lehrjahr: {{ character.lehrjahr }} — Klasse: {{ character.klasse }}</p>
+
+  <h2>Stats</h2>
+  <ul>
+    {% for k,v in character.stats.items() %}
+      <li>{{ k }}: {{ v }}</li>
+    {% endfor %}
+  </ul>
+
+  <h2>Skills</h2>
+  <ul>
+    {% for s in character.skills %}
+      <li>{{ s.name }} (Level {{ s.level }})</li>
+    {% endfor %}
+  </ul>
+
+  <h2>Items</h2>
+  <ul>
+    {% for it in character.inventar %}
+      <li>{{ it }}</li>
+    {% endfor %}
+  </ul>
+
+  <p>
+    <a href="/export/json/{{ character.id }}">Export JSON</a> |
+    <a href="/export/zip/{{ character.id }}">Export ZIP (inkl. Avatar)</a>
+  </p>
+
+  <h3>Backups</h3>
+  <ul>
+    {% for b in backups %}
+      <li>{{ b }}</li>
+    {% endfor %}
+  </ul>
+</body>
+</html>

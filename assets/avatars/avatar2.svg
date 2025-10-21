@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <rect width="100%" height="100%" fill="#fff7ed"/>
+  <circle cx="128" cy="88" r="46" fill="#f6ad55"/>
+  <rect x="56" y="156" width="144" height="60" rx="10" fill="#fbd38d"/>
+  <text x="50%" y="240" font-size="14" text-anchor="middle" fill="#92400e">Avatar 2</text>
+</svg>
